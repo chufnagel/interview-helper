@@ -1,0 +1,25 @@
+{
+  "name": "interview-helper",
+  "version": "0.0.0",
+  "description": "Generate interview scripts for Mock Interviews",
+  "main": "src/server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmichelin/interview-helper.git"
+  },
+  "keywords": [
+    "mock",
+    "interviews",
+    "helpers",
+    "tools"
+  ],
+  "author": "John Michelin <john@javascriptjohn.com> (http://www.javascriptjohn.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jmichelin/interview-helper/issues"
+  },
+  "homepage": "https://github.com/jmichelin/interview-helper#readme"
+}
