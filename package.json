@@ -2,6 +2,7 @@
   "name": "interview-helper",
   "description": "Generate interview scripts for Mock Interviews",
   "main": "src/server/index.js",
+  "version": "0.0.0-semantically-released",
   "scripts": {
     "test": "mocha src/test/server/index.test.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
