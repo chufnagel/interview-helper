@@ -2,3 +2,4 @@
 node_modules/
 src/
 coverage/
+npm-debug.log
