@@ -16,8 +16,6 @@ Script:
 after_success:
   - npm run semantic-release
   - npm run test report-coverage
-  after_success:
-    - bash <(curl -s https://codecov.io/bash)
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
