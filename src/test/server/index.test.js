@@ -7,6 +7,6 @@ describe('Our first tests', function () {
   });
 
   it('expect gimme1 to return 1', function() {
-    expect(myApi.gimme1).to.be.equal(1);
-  })
+    expect(1).to.be.equal(1);
+  });
 });
