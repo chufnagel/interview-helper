@@ -47,10 +47,12 @@
   },
   "dependencies": {
     "blipp": "2.3.0",
+    "boom": "4.2.0",
     "hapi": "15.2.0",
     "hapi-mongodb": "6.2.0",
     "hapi-swagger": "7.4.0",
     "inert": "4.0.2",
+    "joi": "10.0.1",
     "open": "0.0.5",
     "vision": "4.1.0"
   }
