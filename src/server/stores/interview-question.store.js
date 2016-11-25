@@ -25,11 +25,14 @@ const Joi = require('joi');
 
 const interviewIdSchema = Joi.string().min(24);
 
+// _id: Joi.string().min(24),
 const interviewQuestionSchema = Joi.object().keys({
+  _id: interviewIdSchema,
   genre: Joi.string(),
   title: Joi.string(),
   timeToAnswer: Joi.number(),
   questionText: Joi.string(),
+  answerText: Joi.string(),
   status: Joi.string()
 });
 
@@ -72,6 +75,29 @@ exports.register = function (server, options, next) {
 
     store.insertOne(interviewQuestion, (err, result) => {
 
+      if(err) { callback(Boom.internal(err)); }
+
+      getInterviewQuestionDetails(interviewQuestionId, callback);
+    });
+
+  };
+  //updateInterviewQuestion
+  const updateInterviewQuestion = function (interviewQuestionDetails, callback) {
+    const updatedInterviewQuestion = {
+      genre: interviewQuestionDetails.genre,
+      title: interviewQuestionDetails.title,
+      timeToAnswer: interviewQuestionDetails.timeToAnswer,
+      questionText: interviewQuestionDetails.questionText,
+      answerText: interviewQuestionDetails.answerText,
+      status: interviewQuestionDetails.status
+    };
+
+    console.log('interviewQuestionDetails._id => ', interviewQuestionDetails._id, 'Type of => ', typeof interviewQuestionDetails._id);
+
+    let interviewQuestionId = ObjectID.createFromHexString(interviewQuestionDetails._id);
+    console.log('interviewQuestionId type of', typeof interviewQuestionId);
+
+    store.update( { '_id': ObjectID.createFromHexString(interviewQuestionDetails._id) }, updatedInterviewQuestion,(err, result) => {
       if(err) { callback(Boom.internal(err)); }
 
       getInterviewQuestionDetails(interviewQuestionId, callback);
@@ -141,6 +167,26 @@ exports.register = function (server, options, next) {
       }
     },
     {
+      method: 'POST',
+      path: '/interview/question/update',
+      config: {
+        validate: {
+          params: false,
+          query: false,
+          payload: interviewQuestionSchema
+        },
+        handler: function (request, reply) {
+          const interviewQuestionDetails = request.payload;
+          updateInterviewQuestion(interviewQuestionDetails, (err, interviewQuestion) => {
+            if (err) { return reply(Boom.badRequest(err)); }
+            return reply(interviewQuestion);
+          });
+        },
+        description: 'Update an interview Question',
+        tags: ['api']
+      }
+    },
+    {
       method: 'GET',
       path: '/interview/questions/list',
       config: {
@@ -163,7 +209,8 @@ exports.register = function (server, options, next) {
   server.expose({
     getInterviewQuestionDetails: getInterviewQuestionDetails,
     createInterviewQuestion: createInterviewQuestion,
-    getInterviewQuestionList: getInterviewQuestionList
+    getInterviewQuestionList: getInterviewQuestionList,
+    updateInterviewQuestion: updateInterviewQuestion
   });
 
   return next();

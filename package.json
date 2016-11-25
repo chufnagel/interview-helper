@@ -8,7 +8,8 @@
     "check-coverage": "istanbul check-coverage --statements 0 --branches 0 --functions 0 --lines 0",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "start": "nodemon src/server/index.js"
   },
   "repository": {
     "type": "git",
@@ -48,6 +49,7 @@
   "dependencies": {
     "blipp": "2.3.0",
     "boom": "4.2.0",
+    "guid": "0.0.12",
     "hapi": "15.2.0",
     "hapi-mongodb": "6.2.0",
     "hapi-swagger": "7.4.0",
