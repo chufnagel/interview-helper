@@ -1,5 +1,4 @@
 var expect = require('chai').expect;
-var myApi = require('../../server/index.js');
 
 describe('Our first tests', function () {
   it('expect framework should be installed', function() {
