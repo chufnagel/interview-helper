@@ -24,6 +24,14 @@ server.connection({ port: process.env.PORT, host: process.env.HOST });
  **/
 const mongoUrl = 'mongodb://'+ process.env.MLAB_USERNAME+':'+process.env.MLAB_PASSWORD+'@'+process.env.MLAB_URI;
 
+server.route({
+  method: 'GET',
+  path: '/',
+  handler: function (request, reply) {
+    reply('hello world')
+  }
+});
+
 server.register([
   {
     register: HapiMongo,
@@ -47,3 +55,5 @@ server.register([
     //Open(server.info.uri);
   });
 });
+
+module.exports = server;
