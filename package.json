@@ -4,7 +4,7 @@
   "main": "src/server/index.js",
   "version": "0.0.0-semantically-released",
   "engines":{
-    "node":">=5.0.0"
+    "node":">=6.3.1"
   },
   "scripts": {
     "test:blah": "istanbul cover --root ./src -x *.test.js _mocha -- -R spec src/test/server/index.test.js",
