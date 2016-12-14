@@ -51,7 +51,7 @@ exports.register = function (server, options, next) {
     store.insertOne(user, (err, result) => {
 
       if (err) {
-        callback(Boom.internal(err));
+        callback(Boom.internal(err, result));
       }
       getUser(userId, callback);
     });
