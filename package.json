@@ -3,6 +3,9 @@
   "description": "Generate interview scripts for Mock Interviews",
   "main": "src/server/index.js",
   "version": "0.0.0-semantically-released",
+  "engines":{
+    "node":">=5.0.0"
+  },
   "scripts": {
     "test:blah": "istanbul cover --root ./src -x *.test.js _mocha -- -R spec src/test/server/index.test.js",
     "test:lab": "./node_modules/lab/bin/lab -c ",
