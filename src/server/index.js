@@ -10,12 +10,14 @@ const interviewStore = require('./stores/interview-question.store');
 const HapiSwagger = require('hapi-swagger');
 const Inert = require('inert');
 const Vision = require('vision');
-const Open = require('open');
 require('dotenv').config();
 
 const server = new Hapi.Server();
 
-server.connection({ port: process.env.PORT, host: process.env.HOST });
+server.connection({
+  port: process.env.PORT,
+  host: process.env.HOST
+});
 
 /**
  *
@@ -23,6 +25,8 @@ server.connection({ port: process.env.PORT, host: process.env.HOST });
  *
  **/
 const mongoUrl = 'mongodb://'+ process.env.MLAB_USERNAME+':'+process.env.MLAB_PASSWORD+'@'+process.env.MLAB_URI;
+
+//TODO send logs to db
 
 server.register([
   {
@@ -47,3 +51,6 @@ server.register([
     //Open(server.info.uri);
   });
 });
+
+//this does not feel right TODO look up module.exports and hapi
+module.exports = server;

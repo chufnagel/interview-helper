@@ -24,6 +24,7 @@ const Boom = require('boom');
 const Joi = require('joi');
 
 const interviewIdSchema = Joi.string().min(24);
+const statusParamSchema = Joi.string();
 
 // _id: Joi.string().min(24),
 const interviewQuestionSchema = Joi.object().keys({
@@ -106,7 +107,12 @@ exports.register = function (server, options, next) {
   };
   // getInterviewQuestionList
   const getInterviewQuestionList = function (status, callback) {
-    store.find((err, result) => {
+    let statusFilter = {};
+    if (status === 'active') {
+      statusFilter = { 'status': status };
+    }
+
+    store.find(statusFilter, (err, result) => {
       if (!result) {
         console.log('No result');
         return callback(Boom.notFound());
@@ -188,10 +194,17 @@ exports.register = function (server, options, next) {
     },
     {
       method: 'GET',
-      path: '/interview/questions/list',
+      path: '/interview/questions/list/{status?}',
       config: {
+        validate: {
+          params: {
+            status: statusParamSchema
+          },
+          query:false
+        },
         handler: function (request, reply) {
-          getInterviewQuestionList(null, (err, questionList) => {
+          const interviewQuestionStatusFilter = request.params.status;
+          getInterviewQuestionList(interviewQuestionStatusFilter, (err, questionList) => {
             //console.log('inside GET route', questionList);
             if (err) { return reply(Boom.notFound()); }
 
@@ -199,7 +212,7 @@ exports.register = function (server, options, next) {
 
           });
         },
-        description: 'List all questions',
+        description: 'List all questions based on status',
         tags: ['api']
       }
     }
@@ -219,3 +232,4 @@ exports.register = function (server, options, next) {
 exports.register.attributes = {
   name: 'interview-question.store'
 };
+
