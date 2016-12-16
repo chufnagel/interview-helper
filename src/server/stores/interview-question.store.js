@@ -76,7 +76,7 @@ exports.register = function (server, options, next) {
 
     store.insertOne(interviewQuestion, (err, result) => {
 
-      if(err) { callback(Boom.internal(err)); }
+      if (err) { callback(Boom.internal(err)); }
 
       getInterviewQuestionDetails(interviewQuestionId, callback);
     });
@@ -196,6 +196,15 @@ exports.register = function (server, options, next) {
       method: 'GET',
       path: '/interview/questions/list/{status?}',
       config: {
+        cors: {
+          origin: '*',
+          headers: [
+            'Accept',
+            'Authorization',
+            'Content-Type',
+            'If-None-Match'
+          ]
+        },
         validate: {
           params: {
             status: statusParamSchema
