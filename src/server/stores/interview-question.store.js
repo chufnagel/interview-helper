@@ -197,7 +197,7 @@ exports.register = function (server, options, next) {
       path: '/interview/questions/list/{status?}',
       config: {
         cors: {
-          origin: '*',
+          origin: ['*'],
           headers: [
             'Accept',
             'Authorization',

@@ -30,13 +30,10 @@ const mongoUrl = 'mongodb://'+ process.env.MLAB_USERNAME+':'+process.env.MLAB_PA
 server.route({
   method: 'GET',
   path: '/',
-  config: {
-    auth: '',
-    handler: function (request, reply) {
+  handler: function (request, reply) {
 
      return reply('Hello world')
     }
-  }
 });
 
 
