@@ -10,7 +10,7 @@ const interviewStore = require('./stores/interview-question.store');
 const HapiSwagger = require('hapi-swagger');
 const Inert = require('inert');
 const Vision = require('vision');
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
 const server = new Hapi.Server();
 
@@ -27,6 +27,14 @@ server.connection({
 const mongoUrl = 'mongodb://'+ process.env.MLAB_USERNAME+':'+process.env.MLAB_PASSWORD+'@'+process.env.MLAB_URI;
 
 //TODO send logs to db
+
+server.route({
+  method: 'GET',
+  path: '/',
+  handler: function (request, reply) {
+    reply('hello world')
+  }
+});
 
 server.register([
   {
