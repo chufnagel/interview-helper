@@ -32,7 +32,7 @@ server.route({
   method: 'GET',
   path: '/',
   handler: function (request, reply) {
-    reply('got to documentation url to see how to use.')
+    reply('go to documentation url to see how to use.')
   }
 });
 

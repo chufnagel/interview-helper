@@ -93,10 +93,10 @@ exports.register = function (server, options, next) {
       status: interviewQuestionDetails.status
     };
 
-    console.log('interviewQuestionDetails._id => ', interviewQuestionDetails._id, 'Type of => ', typeof interviewQuestionDetails._id);
+    //console.log('interviewQuestionDetails._id => ', interviewQuestionDetails._id, 'Type of => ', typeof interviewQuestionDetails._id);
 
     let interviewQuestionId = ObjectID.createFromHexString(interviewQuestionDetails._id);
-    console.log('interviewQuestionId type of', typeof interviewQuestionId);
+    //console.log('interviewQuestionId type of', typeof interviewQuestionId);
 
     store.update( { '_id': ObjectID.createFromHexString(interviewQuestionDetails._id) }, updatedInterviewQuestion,(err, result) => {
       if(err) { callback(Boom.internal(err)); }
@@ -126,6 +126,23 @@ exports.register = function (server, options, next) {
       return callback(null, result);
 
     });
+  };
+
+  // deleteInterviewQuestion
+  const deleteInterviewQuestion = function (interviewQuestionId, callback) {
+    let result = "";
+    //ObjectID.createFromHexString(interviewQuestionId)
+    try {
+      store.deleteOne({
+        "_id": ObjectID(interviewQuestionId)
+      });
+    } catch (err) {
+      console.log('error deleting record with id', interviewQuestionId, " message: ", err);
+      result = err;
+    }
+
+    result = "successfully deleted record with id: " + interviewQuestionId;
+    return callback(null, result)
   };
 
   server.route([
@@ -215,8 +232,30 @@ exports.register = function (server, options, next) {
         description: 'List all questions based on status',
         tags: ['api']
       }
-    }
+    },
+    {
+      method: 'DELETE',
+      path: '/interview/question/delete/{interviewQuestionId}',
+      config: {
+        validate: {
+          params: {
+            interviewQuestionId: interviewIdSchema.required()
+          },
+          query: false
+        },
+        handler: function (request, reply) {
+          const interviewQuestionId = request.params.interviewQuestionId;
+          deleteInterviewQuestion(interviewQuestionId, (err, interviewQuestion) => {
 
+            if (err) { return reply(Boom.notFound()); }
+
+            return reply(interviewQuestion);
+          });
+        },
+        description: 'Delete an Interview Question',
+        tags: ['api']
+      }
+    },
   ]);
 
   server.expose({
