@@ -174,7 +174,13 @@ exports.register = function (server, options, next) {
       path: '/interview/question/add',
       config: {
         cors: {
-          origin: ['*']
+          origin: ['*'],
+          headers: [
+            'Accept',
+            'Authorization',
+            'Content-Type',
+            'If-None-Match'
+          ]
         },
         validate: {
           params: false,
