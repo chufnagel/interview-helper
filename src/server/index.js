@@ -27,15 +27,6 @@ server.connection({
 const mongoUrl = 'mongodb://'+ process.env.MLAB_USERNAME+':'+process.env.MLAB_PASSWORD+'@'+process.env.MLAB_URI;
 
 //TODO send logs to db
-server.route({
-  method: 'GET',
-  path: '/',
-  handler: function (request, reply) {
-
-     return reply('Hello world')
-    }
-});
-
 
 server.route({
   method: 'GET',
