@@ -180,7 +180,8 @@ exports.register = function (server, options, next) {
             'Authorization',
             'Content-Type',
             'If-None-Match'
-          ]
+          ],
+          additionalHeaders: ['cache-control', 'x-requested-with']
         },
         validate: {
           params: false,
