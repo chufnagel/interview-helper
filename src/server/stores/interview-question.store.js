@@ -173,6 +173,9 @@ exports.register = function (server, options, next) {
       method: 'POST',
       path: '/interview/question/add',
       config: {
+        cors: {
+          origin: ['*']
+        },
         validate: {
           params: false,
           query: false,
