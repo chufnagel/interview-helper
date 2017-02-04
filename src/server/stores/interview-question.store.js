@@ -50,9 +50,11 @@ exports.register = function (server, options, next) {
 
   // getInterviewQuestionDetails
   const getInterviewQuestionDetails = function (questionId, callback) {
-    store.findOne({ '_id': ObjectID(questionId) }, (err, result) => {
+    store.findOne({'_id': ObjectID(questionId)}, (err, result) => {
 
-      if (!result) { return callback(Boom.notFound()); }
+      if (!result) {
+        return callback(Boom.notFound());
+      }
 
       result.id = result._id;
       delete result._id;
@@ -76,7 +78,9 @@ exports.register = function (server, options, next) {
 
     store.insertOne(interviewQuestion, (err, result) => {
 
-      if (err) { callback(Boom.internal(err)); }
+      if (err) {
+        callback(Boom.internal(err));
+      }
 
       getInterviewQuestionDetails(interviewQuestionId, callback);
     });
@@ -84,24 +88,31 @@ exports.register = function (server, options, next) {
   };
   //updateInterviewQuestion
   const updateInterviewQuestion = function (interviewQuestionDetails, callback) {
-    const updatedInterviewQuestion = {
-      genre: interviewQuestionDetails.genre,
-      title: interviewQuestionDetails.title,
-      timeToAnswer: interviewQuestionDetails.timeToAnswer,
-      questionText: interviewQuestionDetails.questionText,
-      answerText: interviewQuestionDetails.answerText,
-      status: interviewQuestionDetails.status
-    };
-
-    //console.log('interviewQuestionDetails._id => ', interviewQuestionDetails._id, 'Type of => ', typeof interviewQuestionDetails._id);
-
     let interviewQuestionId = ObjectID.createFromHexString(interviewQuestionDetails._id);
-    //console.log('interviewQuestionId type of', typeof interviewQuestionId);
+    getInterviewQuestionDetails(interviewQuestionId, (status, questionInfo) => {
+      console.log('questionInfo=> ', questionInfo);
+      console.log('interviewQuestionDetails => ', interviewQuestionDetails);
+      interviewQuestionDetails = Object.assign(questionInfo, interviewQuestionDetails)
+      console.log('interviewQuestionDetails => ', interviewQuestionDetails);
+      const updatedInterviewQuestion = {
+        genre: interviewQuestionDetails.genre,
+        title: interviewQuestionDetails.title,
+        timeToAnswer: interviewQuestionDetails.timeToAnswer,
+        questionText: interviewQuestionDetails.questionText,
+        answerText: interviewQuestionDetails.answerText,
+        status: interviewQuestionDetails.status
+      };
 
-    store.update( { '_id': ObjectID.createFromHexString(interviewQuestionDetails._id) }, updatedInterviewQuestion,(err, result) => {
-      if(err) { callback(Boom.internal(err)); }
+      //console.log('interviewQuestionDetails._id => ', interviewQuestionDetails._id, 'Type of => ', typeof interviewQuestionDetails._id);
+      //console.log('interviewQuestionId type of', typeof interviewQuestionId);
 
-      getInterviewQuestionDetails(interviewQuestionId, callback);
+      store.update({'_id': ObjectID.createFromHexString(interviewQuestionDetails._id)}, updatedInterviewQuestion, (err, result) => {
+        if (err) {
+          callback(Boom.internal(err));
+        }
+
+        getInterviewQuestionDetails(interviewQuestionId, callback);
+      });
     });
 
   };
@@ -109,7 +120,7 @@ exports.register = function (server, options, next) {
   const getInterviewQuestionList = function (status, callback) {
     let statusFilter = {};
     if (status === 'active') {
-      statusFilter = { 'status': status };
+      statusFilter = {'status': status};
     }
 
     store.find(statusFilter, (err, result) => {
@@ -160,7 +171,9 @@ exports.register = function (server, options, next) {
           const interviewQuestionId = request.params.interviewQuestionId;
           getInterviewQuestionDetails(interviewQuestionId, (err, interviewQuestion) => {
 
-            if (err) { return reply(Boom.notFound()); }
+            if (err) {
+              return reply(Boom.notFound());
+            }
 
             return reply(interviewQuestion);
           });
@@ -186,12 +199,15 @@ exports.register = function (server, options, next) {
         validate: {
           params: false,
           query: false,
-          payload: interviewQuestionSchema
+          // payload: interviewQuestionSchema
         },
         handler: function (request, reply) {
+          console.log('request = > ', request);
           const interviewQuestionDetails = request.payload;
           createInterviewQuestion(interviewQuestionDetails, (err, interviewQuestion) => {
-            if (err) { return reply(Boom.badRequest(err)); }
+            if (err) {
+              return reply(Boom.badRequest(err));
+            }
             return reply(interviewQuestion);
           });
         },
@@ -211,7 +227,9 @@ exports.register = function (server, options, next) {
         handler: function (request, reply) {
           const interviewQuestionDetails = request.payload;
           updateInterviewQuestion(interviewQuestionDetails, (err, interviewQuestion) => {
-            if (err) { return reply(Boom.badRequest(err)); }
+            if (err) {
+              return reply(Boom.badRequest(err));
+            }
             return reply(interviewQuestion);
           });
         },
@@ -236,13 +254,15 @@ exports.register = function (server, options, next) {
           params: {
             status: statusParamSchema
           },
-          query:false
+          query: false
         },
         handler: function (request, reply) {
           const interviewQuestionStatusFilter = request.params.status;
           getInterviewQuestionList(interviewQuestionStatusFilter, (err, questionList) => {
             //console.log('inside GET route', questionList);
-            if (err) { return reply(Boom.notFound()); }
+            if (err) {
+              return reply(Boom.notFound());
+            }
 
             return reply(questionList.toArray());
 
@@ -266,7 +286,9 @@ exports.register = function (server, options, next) {
           const interviewQuestionId = request.params.interviewQuestionId;
           deleteInterviewQuestion(interviewQuestionId, (err, interviewQuestion) => {
 
-            if (err) { return reply(Boom.notFound()); }
+            if (err) {
+              return reply(Boom.notFound());
+            }
 
             return reply(interviewQuestion);
           });

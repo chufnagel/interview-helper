@@ -12,7 +12,7 @@ const Inert = require('inert');
 const Vision = require('vision');
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
-const server = new Hapi.Server();
+const server = new Hapi.Server({ debug: { request: ['error'] } });
 
 server.connection({
   port: process.env.PORT,
