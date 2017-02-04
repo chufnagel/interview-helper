@@ -219,6 +219,16 @@ exports.register = function (server, options, next) {
       method: 'POST',
       path: '/interview/question/update',
       config: {
+        cors: {
+          origin: ['*'],
+          headers: [
+            'Accept',
+            'Authorization',
+            'Content-Type',
+            'If-None-Match'
+          ],
+          additionalHeaders: ['cache-control', 'x-requested-with']
+        },
         validate: {
           params: false,
           query: false,
