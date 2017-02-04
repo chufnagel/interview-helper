@@ -88,12 +88,13 @@ exports.register = function (server, options, next) {
   };
   //updateInterviewQuestion
   const updateInterviewQuestion = function (interviewQuestionDetails, callback) {
-    let interviewQuestionId = ObjectID.createFromHexString(interviewQuestionDetails._id);
+    let interviewQuestionId = ObjectID.createFromHexString(interviewQuestionDetails.id);
+    //console.log('interviewQuestionDetails => ', interviewQuestionDetails);
     getInterviewQuestionDetails(interviewQuestionId, (status, questionInfo) => {
-      console.log('questionInfo=> ', questionInfo);
-      console.log('interviewQuestionDetails => ', interviewQuestionDetails);
+      //console.log('questionInfo=> ', questionInfo);
+
       interviewQuestionDetails = Object.assign(questionInfo, interviewQuestionDetails)
-      console.log('interviewQuestionDetails => ', interviewQuestionDetails);
+      //console.log('interviewQuestionDetails => ', interviewQuestionDetails);
       const updatedInterviewQuestion = {
         genre: interviewQuestionDetails.genre,
         title: interviewQuestionDetails.title,
@@ -106,7 +107,7 @@ exports.register = function (server, options, next) {
       //console.log('interviewQuestionDetails._id => ', interviewQuestionDetails._id, 'Type of => ', typeof interviewQuestionDetails._id);
       //console.log('interviewQuestionId type of', typeof interviewQuestionId);
 
-      store.update({'_id': ObjectID.createFromHexString(interviewQuestionDetails._id)}, updatedInterviewQuestion, (err, result) => {
+      store.update({'_id': ObjectID.createFromHexString(interviewQuestionDetails.id)}, updatedInterviewQuestion, (err, result) => {
         if (err) {
           callback(Boom.internal(err));
         }
@@ -232,7 +233,7 @@ exports.register = function (server, options, next) {
         validate: {
           params: false,
           query: false,
-          payload: interviewQuestionSchema
+          //payload: interviewQuestionSchema
         },
         handler: function (request, reply) {
           const interviewQuestionDetails = request.payload;
