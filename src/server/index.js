@@ -10,7 +10,7 @@ const interviewStore = require('./stores/interview-question.store');
 const HapiSwagger = require('hapi-swagger');
 const Inert = require('inert');
 const Vision = require('vision');
-if (process.env.NODE_ENV !== 'production') require('dotenv').config();
+if (process.env.NODE_ENV === 'test') require('dotenv').config();
 
 const server = new Hapi.Server({ debug: { request: ['error'] } });
 
