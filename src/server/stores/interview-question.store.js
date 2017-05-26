@@ -28,7 +28,6 @@ const statusParamSchema = Joi.string();
 
 // _id: Joi.string().min(24),
 const interviewQuestionSchema = Joi.object().keys({
-  _id: interviewIdSchema,
   genre: Joi.string(),
   title: Joi.string(),
   timeToAnswer: Joi.number(),
@@ -37,6 +36,17 @@ const interviewQuestionSchema = Joi.object().keys({
   status: Joi.string()
 });
 
+const interviewUpdateSchema = Joi.object().keys({
+  _id: interviewIdSchema.required(),
+  genre: Joi.string(),
+  title: Joi.string(),
+  timeToAnswer: Joi.number(),
+  questionText: Joi.string(),
+  answerText: Joi.string(),
+  status: Joi.string()
+});
+
+const optionalInterviewUpdateSchema = interviewUpdateSchema.optionalKeys('genre', 'title', 'timeToAnswer', 'questionText', 'answerText', 'status');
 
 exports.register = function (server, options, next) {
   let store;
@@ -120,7 +130,8 @@ exports.register = function (server, options, next) {
   // getInterviewQuestionList
   const getInterviewQuestionList = function (status, callback) {
     let statusFilter = {};
-    if (status === 'active') {
+    if (status.length > 0) {
+      console.log('you got here', status);
       statusFilter = {'status': status};
     }
 
@@ -154,7 +165,7 @@ exports.register = function (server, options, next) {
     }
 
     result = "successfully deleted record with id: " + interviewQuestionId;
-    return callback(null, result)
+    return callback(null, result);
   };
 
   server.route([
@@ -200,10 +211,10 @@ exports.register = function (server, options, next) {
         validate: {
           params: false,
           query: false,
-          // payload: interviewQuestionSchema
+          payload: interviewQuestionSchema
         },
         handler: function (request, reply) {
-          console.log('request = > ', request);
+          //console.log('request = > ', request);
           const interviewQuestionDetails = request.payload;
           createInterviewQuestion(interviewQuestionDetails, (err, interviewQuestion) => {
             if (err) {
@@ -233,10 +244,11 @@ exports.register = function (server, options, next) {
         validate: {
           params: false,
           query: false,
-          //payload: interviewQuestionSchema
+          payload: optionalInterviewUpdateSchema
         },
         handler: function (request, reply) {
           const interviewQuestionDetails = request.payload;
+          interviewQuestionDetails._id = interviewQuestionDetails.id;
           updateInterviewQuestion(interviewQuestionDetails, (err, interviewQuestion) => {
             if (err) {
               return reply(Boom.badRequest(err));
