@@ -244,7 +244,6 @@ exports.register = function (server, options, next) {
         validate: {
           params: false,
           query: false,
-          payload: optionalInterviewUpdateSchema
         },
         handler: function (request, reply) {
           const interviewQuestionDetails = request.payload;
